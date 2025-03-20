@@ -20,7 +20,7 @@ type RequestBody struct {
 func callFlaskAPI(text string) (map[string]interface{}, error) {
 	requestBody, _ := json.Marshal(RequestBody{Text: text})
 
-	resp, err := http.Post("http://127.0.0.1:5000/process", "application/json", bytes.NewBuffer(requestBody))
+	resp, err := http.Post("http://127.0.0.1:5050/process", "application/json", bytes.NewBuffer(requestBody))
 	if err != nil {
 		return nil, err
 	}
