@@ -1,9 +1,14 @@
 #!/bin/bash
+echo "Installing Python dependencies..."
+pip install -r requirements.txt
 
-# Start Flask in the background
+echo "Installing Go..."
+curl -LO https://go.dev/dl/go1.20.linux-amd64.tar.gz
+tar -C /usr/local -xzf go1.20.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+
 echo "Starting Flask server..."
-# python app.py &
 gunicorn -w 4 -b 0.0.0.0:5000 app:app &
-# Start Go API
-# echo "Starting Go API..."
+
+echo "Starting Go server..."
 go run chinese_text_api.go
