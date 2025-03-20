@@ -38,7 +38,7 @@ func main() {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://chinese-text-analyzer-production.up.railway.app"}, // Allow requests from Flask frontend
+		AllowOrigins:     []string{"http://chinese-vocab-extractor-production.up.railway.app"}, // Allow requests from Flask frontend
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
