@@ -20,7 +20,7 @@ type RequestBody struct {
 func callFlaskAPI(text string) (map[string]interface{}, error) {
 	requestBody, _ := json.Marshal(RequestBody{Text: text})
 
-	resp, err := http.Post("http://127.0.0.1:5050/process", "application/json", bytes.NewBuffer(requestBody))
+	resp, err := http.Post("http://127.0.0.1:8080/process", "application/json", bytes.NewBuffer(requestBody))
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +38,7 @@ func main() {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://127.0.0.1:5000"}, // Allow requests from Flask frontend
+		AllowOrigins:     []string{"http://chinese-text-analyzer-production.up.railway.app"}, // Allow requests from Flask frontend
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -66,6 +66,6 @@ func main() {
 		c.JSON(http.StatusOK, result)
 	})
 
-	router.Run(":8080")
+	router.Run(":8081")
 
 }
