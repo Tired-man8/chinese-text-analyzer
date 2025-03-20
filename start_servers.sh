@@ -12,5 +12,5 @@ echo "Starting Flask server..."
 python3 app.py &
 
 echo "Starting Go server..."
-go run chinese_text_api.go
+./go_server
 
