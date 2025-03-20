@@ -1,12 +1,8 @@
 #!/bin/bash
 
-echo "Installing Python..."
-nix-env -iA nixpkgs.python311  # Install Python 3.11
-export PATH=$HOME/.nix-profile/bin:$PATH  # Add Python to PATH
-
 echo "Installing Python dependencies..."
-pip install --upgrade pip
-pip install -r requirements.txt
+pip3 install --upgrade pip
+pip3 install -r requirements.txt
 
 echo "Starting Flask server..."
 python app.py
