@@ -3,6 +3,7 @@ import text_processor as tp
 import traceback
 import json
 import sys
+import os
 
 sys.stdout.reconfigure(encoding='utf-8')
 
@@ -53,4 +54,5 @@ def lookup_hsk():
     return jsonify(word_data)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get("PORT", 8080)) # Use Render's assigned PORT
+    app.run(debug=True, host='0.0.0.0', port=port) # 5000
