@@ -18,19 +18,27 @@ def process_text(text):
             "verbs": {},
             "nouns": {},
             "adjectives": {},
-            "adverbs": {}
+            "adverbs": {},
+            "prepositions": {},
+            "conjunctions": {},
+            "prounouns": {},
+            "time": {},
+            "measure words": {}
         }
 
     # Convert generator to list
     words = list(pseg.cut(text))
 
     # words = pseg.cut(text)
-    noun_tags = ('n', 'nr', 'ns', 'nt', 'nw', 'nz') # Noun
-    verb_tags = ('v', 'vd', 'vn')                   # Verb 
-    adj_tags = ('a',)                               # Adj
-    adv_tags = ('d',)                               # Adv
-    prep_tags = ('p',)                              # Preposition
-    conj_tags = ('c',)                              # Conjunction
+    noun_tags = ('n', 'nr', 'ns', 'nt', 'nw', 'nz', 's', 'f')   # Noun
+    verb_tags = ('v', 'vd', 'vn')                               # Verb 
+    adj_tags = ('a',)                                           # Adj
+    adv_tags = ('d',)                                           # Adv
+    prep_tags = ('p',)                                          # Preposition
+    conj_tags = ('c',)                                          # Conjunction
+    pronoun_tags = ('r',)                                       # Pronouns
+    time_tags = ('t',)                                          # Time
+    mw_tags = ('m',)                                            # Measure Words
 
     verb_occurrence = dict()
     noun_occurrence = dict()
@@ -38,6 +46,9 @@ def process_text(text):
     adv_occurrence = dict()
     prep_occurrence = dict()
     conj_occurrence = dict()
+    prounoun_occurrence = dict()
+    time_occurrence = dict()
+    mw_occurrence = dict()
 
     # for word, flag in words:
     for token in words:
@@ -110,6 +121,39 @@ def process_text(text):
                     "Occurrence": 0
                 }
             conj_occurrence[word]["Occurrence"] += 1
+
+        elif flag in pronoun_tags: # If flag is a noun
+            if word not in pronoun_occurrence:
+                pronoun_occurrence[word] = {
+                    "Chinese": word,
+                    "Pinyin": word_data.get("Pinyin", "Not in HSK"),
+                    "English": word_data.get("English", "Not in HSK"),
+                    "HSK": word_data.get("HSK", "Not in HSK"),
+                    "Occurrence": 0
+                }
+            pronoun_occurrence[word]["Occurrence"] += 1
+
+        elif flag in time_tags: # If flag is a noun
+            if word not in time_occurrence:
+                time_occurrence[word] = {
+                    "Chinese": word,
+                    "Pinyin": word_data.get("Pinyin", "Not in HSK"),
+                    "English": word_data.get("English", "Not in HSK"),
+                    "HSK": word_data.get("HSK", "Not in HSK"),
+                    "Occurrence": 0
+                }
+            time_occurrence[word]["Occurrence"] += 1
+
+        elif flag in mw_tags: # If flag is a noun
+            if word not in mw_occurrence:
+                mw_occurrence[word] = {
+                    "Chinese": word,
+                    "Pinyin": word_data.get("Pinyin", "Not in HSK"),
+                    "English": word_data.get("English", "Not in HSK"),
+                    "HSK": word_data.get("HSK", "Not in HSK"),
+                    "Occurrence": 0
+                }
+            mw_occurrence[word]["Occurrence"] += 1
         else:
             continue
 
@@ -119,15 +163,8 @@ def process_text(text):
         "adjectives": adj_occurrence,
         "adverbs": adv_occurrence,
         "prepositions": prep_occurrence,
-        "conjunctions": conj_occurrence
+        "conjunctions": conj_occurrence,
+        "prounouns": pronoun_occurrence,
+        "time": time_occurrence,
+        "measure words": mw_occurrence
     }
-
-# with open("output.txt", 'w', encoding='utf-8') as file:
-#     file.write("Verbs:\n")
-#     json.dump(verb_occurrence, file, ensure_ascii=False, indent=4)
-#     file.write("\nNouns:\n")
-#     json.dump(noun_occurrence, file, ensure_ascii=False, indent=4)
-#     file.write("\nAdj:\n")
-#     json.dump(adj_occurrence, file, ensure_ascii=False, indent=4)
-#     file.write("\nAdv:\n")
-#     json.dump(adv_occurrence, file, ensure_ascii=False, indent=4)
