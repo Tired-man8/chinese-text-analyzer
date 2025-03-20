@@ -21,7 +21,7 @@ def process_text(text):
             "adverbs": {},
             "prepositions": {},
             "conjunctions": {},
-            "prounouns": {},
+            "pronouns": {},
             "time": {},
             "measure words": {}
         }
@@ -46,7 +46,7 @@ def process_text(text):
     adv_occurrence = dict()
     prep_occurrence = dict()
     conj_occurrence = dict()
-    prounoun_occurrence = dict()
+    pronoun_occurrence = dict()
     time_occurrence = dict()
     mw_occurrence = dict()
 
@@ -164,7 +164,7 @@ def process_text(text):
         "adverbs": adv_occurrence,
         "prepositions": prep_occurrence,
         "conjunctions": conj_occurrence,
-        "prounouns": pronoun_occurrence,
+        "pronouns": pronoun_occurrence,
         "time": time_occurrence,
         "measure words": mw_occurrence
     }
