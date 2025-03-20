@@ -1,5 +1,9 @@
 # 🇨🇳 Chinese Text Analysis API 
 
+Website -> https://chinese-text-analyzer-production.up.railway.app/
+
+This is a personal project to practice programming while improving my Chinese. Hopefully it helps you too.
+
 A hybrid **Go + Python** API that analyzes Chinese text, categorizes words (verbs, nouns, adjectives, etc.), and provides **HSK level** classification. The project uses:
 - **Go (Gin)** for the primary API
 - **Flask (Python)** for text processing with `jieba`
@@ -25,22 +29,7 @@ A hybrid **Go + Python** API that analyzes Chinese text, categorizes words (verb
 
 ---
 
-## **🚀 Installation & Setup**
-### **1️⃣ Clone the Repository**
-
-## **Dependencies**
-Python:
-pip install flask jieba
-
-Go:
-go get -u github.com/gin-gonic/gin
-
-## Running Project
-start_servers.sh
-
-http://127.0.0.1:5000
-
-```sh
-git clone https://github.com/your-username/chinese-text-analysis.git
-cd chinese-text-analysis
-
+## **Future Improvements**
+- Add HSK 7-9 vocabulary
+- Add feature to export vocabulary to anki
+- Other feedback I receive :)
