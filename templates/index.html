@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+   <meta charet="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Chinese Text Analysis API</title>
+   <style>
+      body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+      textarea { width: 80%; height: 100px; margin-bottom: 10px; }
+      table { width: 80%; margin: 10px auto; border-collapse: collapse; }
+      th, td { border: 1px solid black; padding: 8px; text-align: center; }
+      th { background-color: #f2f2f2; }
+      h1 { color:rgb(248, 6, 10) }
+      u1 { text-align: left; display: inline-block; margin-top: 10px; }
+   </style>
+</head>
+<body>
+   <h1>Welcome to the Chinese Text Analysis API</h1>
+   <textarea id="input-text" name="chinese" placeholder="Enter Chinese text..." rows="15" cols="75"></textarea>
+   <br>
+   <button onclick="analyzeText()">Analyze</button>
+
+   <h2>Results:</h2>
+   
+   <!--Control buttons-->
+   <div id="myButtonContainer">
+      <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+      <button class="btn" onclick="filterSelection('HSK1')"> HSK 1</button>
+      <button class="btn" onclick="filterSelection('HSK2')"> HSK 2</button>
+      <button class="btn" onclick="filterSelection('HSK3')"> HSK 3</button>
+      <button class="btn" onclick="filterSelection('HSK4')"> HSK 4</button>
+      <button class="btn" onclick="filterSelection('HSK5')"> HSK 5</button>
+      <button class="btn" onclick="filterSelection('HSK6')"> HSK 6</button>
+      <button class="btn" onclick="filterSelection('NotOnHSK')"> Not on HSK</button>
+   </div>
+   <!--Output tables-->
+   <div id="output"></div>
+
+   <!--JS-->
+   <script>
+      let globalData = {} // Store API response globally for filtering
+
+      async function analyzeText() {
+         const text = document.getElementById("input-text").value;
+
+         try {
+            const response = await fetch("http://127.0.0.1:8080/process", {
+               method: "POST",
+               headers: { "Content-Type": "application/json" },
+               body: JSON.stringify({ text: text })
+            });
+
+
+            if (!response.ok) {
+               console.error("Server returned error:", response.status);
+               document.getElementById("output").innerText = "Error: " + response.status;
+            }
+
+            globalData = await response.json();
+            displayResults(globalData, "all");
+            // document.getElementById("output").innerText = JSON.stringify(result, null, 4);
+         } catch (error) {
+            console.error("Fetch Error:", error);
+            document.getElementById("output").innerText = "Error: Failed to connect to API.";
+         }
+      }
+
+      function displayResults(data, hskFilter = "all") {
+         const outputDiv = document.getElementById("output");
+         outputDiv.innerHTML = ""; // Clear previous results
+      
+         for (const category in data) {
+            let filteredWords = Object.entries(data[category]) // Converto to array for sorting
+
+               .filter(([_, details]) => hskFilter === "all" ||
+                  (hskFilter === "NotOnHSK" && details.HSK === "Not in HSK") ||
+                  (details.HSK && details.HSK.replace(/\s/g, '') === hskFilter.replace("HSK", ""))) // Filter by HSK level
+
+               .sort((a, b) => b[1].Occurrence - a[1].Occurrence); // Sort by occurrence
+
+               if (Object.keys(data[category]).length > 0) { // Only show non-empty categories
+                  outputDiv.innerHTML += `<h3>${category.charAt(0).toUpperCase() + category.slice(1)}</h3>`;
+                  outputDiv.innerHTML += generateTable(filteredWords); // Pass an array
+                }
+            }
+        }
+
+        function generateTable(wordsArray) {
+            let tableHTML = "<table><tr><th>Chinese</th><th>Pinyin</th><th>English</th><th>HSK</th><th>Occurrences</th></tr>";
+            
+               wordsArray.forEach(([word, entry]) => {
+                  tableHTML += `<tr>
+                     <td>${entry.Chinese}</td>
+                     <td>${entry.Pinyin}</td>
+                     <td>${entry.English}</td>
+                     <td>${entry.HSK}</td>
+                     <td>${entry.Occurrence}</td>
+                  </tr>`;
+               });
+      
+            tableHTML += "</table>";
+            return tableHTML;
+        }
+
+        function filterSelection(hskLevel) {
+            displayResults(globalData, hskLevel);
+        }
+   </script>
+</body>
+</html>
